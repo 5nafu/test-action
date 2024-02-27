@@ -1,0 +1,16 @@
+name: 'test-action'
+
+inputs:
+  test:
+    required: false
+    default: ''
+
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Run
+      shell: bash
+      if: inputs.test != ''
+      run: |
+        echo "${{ inputs.test }}"
