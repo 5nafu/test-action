@@ -11,9 +11,7 @@ jobs:
     steps:
       - name: test_open
         id: test
-        uses: 5nafu/test-action@main
-        with:
-          test: "foobar - open"
+        uses: 5nafu/test-action/create@main
   close:
     runs-on: ubuntu-latest
     name: Close issue on PR creation
@@ -23,6 +21,4 @@ jobs:
     steps:
       - name: test_close
         id: test
-        uses: 5nafu/test-action@main
-        with:
-          test: "foobar - close"
+        uses: 5nafu/test-action/close@main
