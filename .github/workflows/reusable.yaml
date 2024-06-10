@@ -1,0 +1,28 @@
+name: Test reusable workflow
+on:
+    workflow_call:
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    name: Create issue on PR creation
+    if: github.event.action == 'opened' || github.event.action == 'reopened'
+    permissions:
+      pull-requests: write
+    steps:
+      - name: test_open
+        id: test
+        uses: 5nafu/test-action@main
+        with:
+          test: "foobar - open"
+  close:
+    runs-on: ubuntu-latest
+    name: Close issue on PR creation
+    if: github.event.action == 'closed'
+    permissions:
+      pull-requests: write
+    steps:
+      - name: test_close
+        id: test
+        uses: 5nafu/test-action@main
+        with:
+          test: "foobar - close"
