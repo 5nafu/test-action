@@ -1,0 +1,8 @@
+name: calling reusable WF
+on: 
+  pull_request:
+    types: [opened, reopened, closed]
+jobs:
+  create_or_close_issue:
+    uses: 5nafu/test-action/.github/workflows/reusable.yaml@main
+    secrets: inherit
