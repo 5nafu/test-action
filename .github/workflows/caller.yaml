@@ -4,5 +4,7 @@ on:
     types: [opened, reopened, closed]
 jobs:
   create_or_close_issue:
+    permissions:
+      pull-requests: write
     uses: 5nafu/test-action/.github/workflows/reusable.yaml@main
     secrets: inherit
