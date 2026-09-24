@@ -3,18 +3,15 @@ name: skip jobs
 on:
   workflow_dispatch:
     inputs:
-      run-skip:
-        type: boolean
+      max-job:
+        type: number
         required: false
-        default: false
-      run-deploy:
-        type: boolean
-        required: false
-        default: true
+        default: 3
   
 jobs:
   fail:
     runs-on: ubuntu-latest
+    if: success() && inputs.max-job >= 1
     steps:
       - run: |
           echo "fail job"
@@ -23,7 +20,7 @@ jobs:
   skip:
     runs-on: ubuntu-latest
     needs: fail
-    if: success() && inputs.run-job
+    if: success() && inputs.max-job >= 2
     steps:
       - run: echo "this job should have been skipped"
       
@@ -31,6 +28,6 @@ jobs:
   deploy:
     needs: skip
     runs-on: ubuntu-latest
-    if: success() && inputs.run-deploy
+    if: success() && inputs.max-job >= 3
     steps:
       - run: echo "Deploy"
