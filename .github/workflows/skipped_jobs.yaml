@@ -1,0 +1,36 @@
+name: skip jobs
+
+on:
+  workflow_dispatch:
+    inputs:
+      run-skip:
+        type: boolean
+        required: false
+        default: false
+      run-deploy:
+        type: boolean
+        required: false
+        default: true
+  
+jobs:
+  fail:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "fail job"
+          exit 1
+
+  skip:
+    runs-on: ubuntu-latest
+    needs: fail
+    if: success() && inputs.run-job
+    steps:
+      - run: echo "this job should have been skipped"
+      
+
+  deploy:
+    needs: skip
+    runs-on: ubuntu-latest
+    if: success() && inputs.run-deploy
+    steps:
+      - run: echo "Deploy"
