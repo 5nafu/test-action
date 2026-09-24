@@ -1,4 +1,5 @@
 name: skip jobs
+run-name: skip jobs (max-job=${{ inputs.max-job }}, fail-base-dependency=${{ inputs.fail-base-dependency }}) by @${{ github.actor }}
 
 on:
   workflow_dispatch:
@@ -7,19 +8,25 @@ on:
         type: number
         required: false
         default: 3
-  
+      fail-base-dependency:
+        type: boolean
+        required: false
+        default: true
+
 jobs:
-  fail:
+  base_dependency:
     runs-on: ubuntu-latest
     if: success() && inputs.max-job >= 1
     steps:
       - run: |
-          echo "fail job"
-          exit 1
+          echo "base_dependency job"
+          if [ "${{ inputs.fail-base-dependency }}" = "true" ]; then
+            exit 1
+          fi
 
   skip:
     runs-on: ubuntu-latest
-    needs: fail
+    needs: base_dependency
     if: success() && inputs.max-job >= 2
     steps:
       - run: echo "this job should have been skipped"
